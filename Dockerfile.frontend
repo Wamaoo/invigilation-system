@@ -2,16 +2,19 @@
 FROM node:20-alpine AS frontend-builder
 
 WORKDIR /app
+COPY invigilation-system/package.json invigilation-system/pnpm-lock.yaml ./invigilation-system/
+RUN corepack enable && cd invigilation-system && pnpm install
+
 COPY invigilation-system/ ./invigilation-system/
-WORKDIR /app/invigilation-system
-RUN npm install && npm run build
+RUN cd invigilation-system && pnpm run build
 
 # ========== Stage 2: Express Server ==========
 FROM node:20-alpine
 
 WORKDIR /app
 
-COPY my_server_invigilation/package.json my_server_invigilation/package-lock.json ./
+# package-lock.json 不存在也没关系，只复制 package.json
+COPY my_server_invigilation/package.json ./
 RUN npm install
 
 COPY my_server_invigilation/ ./
