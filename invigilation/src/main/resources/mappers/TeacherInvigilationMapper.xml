@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.invigilation.invigilation.mapper.TeacherInvigilationMapper">
+
+    <resultMap id="BaseResultMap" type="com.invigilation.invigilation.entity.TeacherInvigilation">
+        <id column="id" property="id"/>
+        <result column="teacher_id" property="teacherId"/>
+        <result column="arrange_id" property="arrangeId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectByTeacherId" resultMap="BaseResultMap">
+        SELECT * FROM teacher_invigilation WHERE teacher_id = #{teacherId}
+    </select>
+
+    <select id="selectByArrangeId" resultMap="BaseResultMap">
+        SELECT * FROM teacher_invigilation WHERE arrange_id = #{arrangeId}
+    </select>
+
+    <insert id="insert" parameterType="com.invigilation.invigilation.entity.TeacherInvigilation"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO teacher_invigilation (teacher_id, arrange_id, create_time, update_time)
+        VALUES (#{teacherId}, #{arrangeId}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="batchInsert">
+        INSERT INTO teacher_invigilation (teacher_id, arrange_id, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.teacherId}, #{item.arrangeId}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByArrangeId">
+        DELETE FROM teacher_invigilation WHERE arrange_id = #{arrangeId}
+    </delete>
+
+    <delete id="deleteByTeacherId">
+        DELETE FROM teacher_invigilation WHERE teacher_id = #{teacherId}
+    </delete>
+
+</mapper>

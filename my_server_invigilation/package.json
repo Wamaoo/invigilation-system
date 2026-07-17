@@ -1,0 +1,19 @@
+{
+  "name": "my_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd ../invigilation-system && npm install && npm run build && mkdir -p ../my_server_invigilation/public && cp -r dist/* ../my_server_invigilation/public/",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect-history-api-fallback": "^1.6.0",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^3.0.0"
+  }
+}

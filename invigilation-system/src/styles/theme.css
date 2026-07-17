@@ -1,0 +1,155 @@
+/* ========== 亮色模式（默认）========== */
+:root {
+  /* 侧边栏 - 管理员端 */
+  --admin-sidebar-bg: #0f172a;
+  --admin-sidebar-text: #ffffff;
+  --admin-sidebar-active: #4ade80;
+  --admin-sidebar-border: #334155;
+
+  /* 侧边栏 - 教师端 */
+  --teacher-sidebar-bg: #1e40af;
+  --teacher-sidebar-text: #ffffff;
+  --teacher-sidebar-active: #bfdbfe;
+  --teacher-sidebar-border: #3b82f6;
+
+  /* 侧边栏共享 */
+  --sidebar-text: #ffffff;
+  --sidebar-active-text: #4ade80;
+  --sidebar-border: #334155;
+
+  /* 头部 */
+  --header-bg: #ffffff;
+  --header-border: #e5e7eb;
+
+  /* 主内容区 */
+  --main-bg: #f8fafc;
+
+  /* 文字 */
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+
+  /* 卡片 */
+  --card-bg: #ffffff;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --card-header-border: #e5e7eb;
+
+  /* 登录页 */
+  --login-bg: #f8fafc;
+  --login-card-bg: rgba(255, 255, 255, 0.9);
+  --login-header-bg: #ffffff;
+  --login-header-border: #e5e7eb;
+  --login-footer-bg: #444444;
+
+  /* 通用边框 */
+  --border-color: #e5e7eb;
+
+  /* 空状态背景 */
+  --empty-state-bg: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  --empty-state-border: #bae6fd;
+}
+
+/* ========== 暗色模式 ========== */
+.dark {
+  --admin-sidebar-bg: #0f172a;
+  --admin-sidebar-text: #cdd6f4;
+  --admin-sidebar-active: #89b4fa;
+  --admin-sidebar-border: #2a2a3e;
+
+  --teacher-sidebar-bg: #1a1a3e;
+  --teacher-sidebar-text: #cdd6f4;
+  --teacher-sidebar-active: #89b4fa;
+  --teacher-sidebar-border: #2a2a3e;
+
+  --sidebar-text: #cdd6f4;
+  --sidebar-active-text: #89b4fa;
+  --sidebar-border: #2a2a3e;
+
+  --header-bg: #1e1e2e;
+  --header-border: #2a2a3e;
+
+  --main-bg: #11111b;
+
+  --text-primary: #cdd6f4;
+  --text-secondary: #8892b0;
+
+  --card-bg: #1e1e2e;
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --card-header-border: #313244;
+
+  --login-bg: #11111b;
+  --login-card-bg: rgba(30, 30, 46, 0.96);
+  --login-header-bg: #1e1e2e;
+  --login-header-border: #313244;
+  --login-footer-bg: #1e1e2e;
+
+  --border-color: #313244;
+
+  --empty-state-bg: linear-gradient(135deg, #1a1a3e 0%, #16213e 100%);
+  --empty-state-border: #2a2a5e;
+}
+
+/* 全局背景过渡 */
+html {
+  transition: background-color 0.3s ease;
+}
+html.dark {
+  background-color: #11111b;
+}
+
+/* ========== 全局暗色覆盖 ========== */
+.dark .el-card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+.dark .el-card__header {
+  border-bottom-color: var(--card-header-border) !important;
+}
+.dark .el-table {
+  --el-table-bg-color: var(--card-bg);
+  --el-table-tr-bg-color: var(--card-bg);
+  --el-table-header-bg-color: #181825;
+  --el-table-border-color: var(--border-color);
+  --el-table-text-color: var(--text-primary);
+  --el-table-header-text-color: var(--text-primary);
+}
+.dark .el-table__body tr:hover > td {
+  --el-table-row-hover-bg-color: #2a2a3e;
+}
+.dark .el-dialog {
+  --el-dialog-bg-color: var(--card-bg);
+  --el-dialog-title-text-color: var(--text-primary);
+}
+.dark .el-form-item__label {
+  color: var(--text-primary);
+}
+.dark .el-input__wrapper {
+  background-color: #181825;
+  box-shadow: 0 0 0 1px var(--border-color) inset;
+}
+.dark .el-tag--light {
+  --el-tag-bg-color: #2a2a3e;
+  --el-tag-text-color: var(--text-primary);
+}
+.dark .el-select-tags-wrapper .el-tag {
+  --el-tag-bg-color: #313244;
+}
+.dark .el-pagination {
+  --el-pagination-text-color: var(--text-primary);
+  --el-pagination-button-bg-color: var(--card-bg);
+}
+.dark .el-pagination button:disabled {
+  background-color: var(--card-bg);
+}
+.dark .el-empty__description p {
+  color: var(--text-secondary);
+}
+.dark .el-main {
+  background-color: var(--main-bg);
+}
+.dark .el-header {
+  background-color: var(--header-bg) !important;
+  border-bottom-color: var(--header-border) !important;
+}
+.dark .el-aside {
+  transition: background-color 0.3s;
+}

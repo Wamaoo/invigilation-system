@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--绑定对应的Mapper接口-->
+<mapper namespace="com.invigilation.invigilation.mapper.TeacherInfoMapper">
+    <select id="selectByCondition" resultType="com.invigilation.invigilation.entity.TeacherInfo">
+        SELECT * FROM teacher_info
+        <where>
+            <if test="teacherName != null and teacherName != ''">
+                AND teacher_name LIKE CONCAT('%', #{teacherName}, '%')
+            </if>
+            <if test="department != null and department != ''">
+                AND department = #{department}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.invigilation.invigilation.entity.TeacherInfo">
+        INSERT INTO teacher_info
+            (teacher_id, teacher_name, department, phone, create_time, update_time)
+        VALUES
+            (#{teacherId}, #{teacherName}, #{department}, #{phone}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="updateById" parameterType="com.invigilation.invigilation.entity.TeacherInfo">
+        UPDATE teacher_info
+        <set>
+            <if test="teacherName != null">teacher_name = #{teacherName},</if>
+            <if test="department != null">department = #{department},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="updateTime != null">update_time = #{updateTime}</if>
+        </set>
+        WHERE teacher_id = #{teacherId}
+    </update>
+
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM teacher_info WHERE teacher_id = #{teacherId}
+    </delete>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByConditionWithPage" resultType="com.invigilation.invigilation.entity.TeacherInfo">
+        SELECT * FROM teacher_info
+        <where>
+            <if test="teacherName != null and teacherName != ''">
+                AND teacher_name LIKE CONCAT('%', #{teacherName}, '%')
+            </if>
+            <if test="department != null and department != ''">
+                AND department = #{department}
+            </if>
+        </where>
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <!-- 条件统计总数 -->
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(*) FROM teacher_info
+        <where>
+            <if test="teacherName != null and teacherName != ''">
+                AND teacher_name LIKE CONCAT('%', #{teacherName}, '%')
+            </if>
+            <if test="department != null and department != ''">
+                AND department = #{department}
+            </if>
+        </where>
+    </select>
+
+    <!-- 统计教师总数 -->
+    <select id="countTeachers" resultType="long">
+        SELECT COUNT(*) FROM teacher_info
+    </select>
+</mapper>

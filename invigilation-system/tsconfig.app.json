@@ -1,0 +1,22 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": ["vite/client"],
+
+    /* 路径别名：@/ 映射到 src/ */
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    /* Linting（原有严格校验配置，全部保留） */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue","src/types/**/*.d.ts"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"]
+}

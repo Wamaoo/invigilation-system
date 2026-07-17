@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.invigilation.invigilation.mapper.ExamSubjectMapper">
+    <!-- 按条件查询考试科目 -->
+    <select id="selectByCondition" resultType="com.invigilation.invigilation.entity.ExamSubject">
+        SELECT * FROM exam_subject
+        <where>
+            <if test="examName != null and examName != ''">
+                AND exam_name LIKE CONCAT('%', #{examName}, '%')
+            </if>
+            <if test="major != null and major != ''">
+                AND major = #{major}
+            </if>
+            <if test="examType != null and examType != ''">
+                AND exam_type = #{examType}
+            </if>
+            <if test="semesterId != null and semesterId != ''">
+                AND semester_id = #{semesterId}
+            </if>
+        </where>
+        ORDER BY update_time DESC
+    </select>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByConditionWithPage" resultType="com.invigilation.invigilation.entity.ExamSubject">
+        SELECT * FROM exam_subject
+        <where>
+            <if test="examName != null and examName != ''">
+                AND exam_name LIKE CONCAT('%', #{examName}, '%')
+            </if>
+            <if test="major != null and major != ''">
+                AND major = #{major}
+            </if>
+            <if test="examType != null and examType != ''">
+                AND exam_type = #{examType}
+            </if>
+            <if test="semesterId != null and semesterId != ''">
+                AND semester_id = #{semesterId}
+            </if>
+        </where>
+        ORDER BY update_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <!-- 条件统计总数 -->
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(*) FROM exam_subject
+        <where>
+            <if test="examName != null and examName != ''">
+                AND exam_name LIKE CONCAT('%', #{examName}, '%')
+            </if>
+            <if test="major != null and major != ''">
+                AND major = #{major}
+            </if>
+            <if test="examType != null and examType != ''">
+                AND exam_type = #{examType}
+            </if>
+            <if test="semesterId != null and semesterId != ''">
+                AND semester_id = #{semesterId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 新增考试科目 -->
+    <insert id="insert" parameterType="com.invigilation.invigilation.entity.ExamSubject">
+        INSERT INTO exam_subject (
+            subject_id, exam_name, grade, major, exam_type, semester_id, create_time, update_time
+        ) VALUES (
+                     #{subjectId}, #{examName}, #{grade}, #{major}, #{examType}, #{semesterId}, #{createTime}, #{updateTime}
+                 )
+    </insert>
+
+    <!-- 根据ID更新考试科目 -->
+    <update id="updateById" parameterType="com.invigilation.invigilation.entity.ExamSubject">
+        UPDATE exam_subject
+        SET
+            exam_name = #{examName},
+            grade = #{grade},
+            major = #{major},
+            exam_type = #{examType},
+            semester_id = #{semesterId},
+            update_time = #{updateTime}
+        WHERE subject_id = #{subjectId}
+    </update>
+
+    <!-- 根据ID删除考试科目 -->
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM exam_subject WHERE subject_id = #{subjectId}
+    </delete>
+
+    <!-- 统计考试科目总数 -->
+    <select id="countExams" resultType="long">
+        SELECT COUNT(*) FROM exam_subject
+    </select>
+</mapper>

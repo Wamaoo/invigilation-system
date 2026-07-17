@@ -1,0 +1,22 @@
+# ========== Stage 1: Build Vue Frontend ==========
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /app
+COPY invigilation-system/ ./invigilation-system/
+WORKDIR /app/invigilation-system
+RUN npm install && npm run build
+
+# ========== Stage 2: Express Server ==========
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY my_server_invigilation/package.json my_server_invigilation/package-lock.json ./
+RUN npm install
+
+COPY my_server_invigilation/ ./
+COPY --from=frontend-builder /app/invigilation-system/dist/ ./public/
+
+EXPOSE 8089
+
+CMD ["node", "server.js"]

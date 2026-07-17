@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.invigilation.invigilation.mapper.InvigilationConfigMapper">
+    <!-- 基础结果映射 -->
+    <resultMap id="BaseResultMap" type="com.invigilation.invigilation.entity.InvigilationConfig">
+        <id column="arrange_id" property="arrangeId"/>
+        <result column="subject_id" property="subjectId"/>
+        <result column="exam_name" property="examName"/>
+        <result column="classroom" property="classroom"/>
+        <result column="exam_date" property="examDate"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="required_teachers" property="requiredTeachers"/>
+        <result column="exam_duration" property="examDuration"/>
+        <result column="semester_id" property="semesterId"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 按条件查询监考安排 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT * FROM invigilation_config
+        <where>
+            <if test="examName != null and examName != ''">
+                AND exam_name LIKE CONCAT('%', #{examName}, '%')
+            </if>
+            <if test="classroom != null and classroom != ''">
+                AND classroom LIKE CONCAT('%', #{classroom}, '%')
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND exam_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND exam_date &lt;= #{endDate}
+            </if>
+            <if test="semesterId != null and semesterId != ''">
+                AND semester_id = #{semesterId}
+            </if>
+        </where>
+        ORDER BY update_time DESC
+    </select>
+
+    <!-- 带分页的条件查询（日期条件直接在SQL层处理） -->
+    <select id="selectByConditionWithPage" resultMap="BaseResultMap">
+        SELECT * FROM invigilation_config
+        <where>
+            <if test="examName != null and examName != ''">
+                AND exam_name LIKE CONCAT('%', #{examName}, '%')
+            </if>
+            <if test="classroom != null and classroom != ''">
+                AND classroom LIKE CONCAT('%', #{classroom}, '%')
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND exam_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND exam_date &lt;= #{endDate}
+            </if>
+            <if test="semesterId != null and semesterId != ''">
+                AND semester_id = #{semesterId}
+            </if>
+        </where>
+        ORDER BY exam_date DESC, start_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <!-- 条件查询总数 -->
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(*) FROM invigilation_config
+        <where>
+            <if test="examName != null and examName != ''">
+                AND exam_name LIKE CONCAT('%', #{examName}, '%')
+            </if>
+            <if test="classroom != null and classroom != ''">
+                AND classroom LIKE CONCAT('%', #{classroom}, '%')
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND exam_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND exam_date &lt;= #{endDate}
+            </if>
+            <if test="semesterId != null and semesterId != ''">
+                AND semester_id = #{semesterId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 新增监考安排 -->
+    <insert id="insert" parameterType="com.invigilation.invigilation.entity.InvigilationConfig">
+        INSERT INTO invigilation_config (
+            arrange_id, subject_id, exam_name, classroom,
+            exam_date, start_time, end_time, required_teachers,
+            exam_duration, semester_id, status, remark, create_time, update_time
+        ) VALUES (
+            #{arrangeId}, #{subjectId}, #{examName}, #{classroom},
+            #{examDate}, #{startTime}, #{endTime}, #{requiredTeachers},
+            #{examDuration}, #{semesterId}, #{status}, #{remark}, #{createTime}, #{updateTime}
+        )
+    </insert>
+
+    <!-- 根据ID更新监考安排 -->
+    <update id="updateById" parameterType="com.invigilation.invigilation.entity.InvigilationConfig">
+        UPDATE invigilation_config
+        <set>
+            <if test="subjectId != null">subject_id = #{subjectId},</if>
+            <if test="examName != null and examName != ''">exam_name = #{examName},</if>
+            <if test="classroom != null and classroom != ''">classroom = #{classroom},</if>
+            <if test="examDate != null and examDate != ''">exam_date = #{examDate},</if>
+            <if test="startTime != null and startTime != ''">start_time = #{startTime},</if>
+            <if test="endTime != null and endTime != ''">end_time = #{endTime},</if>
+            <if test="requiredTeachers != null">required_teachers = #{requiredTeachers},</if>
+            <if test="examDuration != null and examDuration != ''">exam_duration = #{examDuration},</if>
+            <if test="semesterId != null and semesterId != ''">semester_id = #{semesterId},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = #{updateTime}
+        </set>
+        WHERE arrange_id = #{arrangeId}
+    </update>
+
+    <!-- 根据ID删除监考安排 -->
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM invigilation_config WHERE arrange_id = #{arrangeId}
+    </delete>
+
+    <!-- 根据ID列表查询监考安排 -->
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT * FROM invigilation_config
+        WHERE arrange_id IN
+        <foreach collection="arrangeIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 查询全部 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM invigilation_config ORDER BY exam_date DESC, start_time DESC
+    </select>
+
+    <!-- 统计监考安排总数 -->
+    <select id="countInvigilations" resultType="long">
+        SELECT COUNT(*) FROM invigilation_config
+    </select>
+
+    <!-- 统计冲突预警数 -->
+    <select id="countConflicts" resultType="long">
+        SELECT COUNT(*) FROM invigilation_config WHERE status = '冲突预警'
+    </select>
+
+    <!-- 获取近期监考安排 -->
+    <select id="selectRecentInvigilations" resultMap="BaseResultMap">
+        SELECT * FROM invigilation_config
+        ORDER BY exam_date DESC, start_time DESC LIMIT #{limit}
+    </select>
+
+    <!-- 查询某教师在指定时间段内的冲突安排数 -->
+    <select id="countTeacherConflictsInTimeRange" resultType="long">
+        SELECT COUNT(*) FROM teacher_invigilation ti
+        JOIN invigilation_config ic ON ti.arrange_id = ic.arrange_id
+        WHERE ti.teacher_id = #{teacherId}
+          AND ic.exam_date = #{examDate}
+          AND ic.start_time &lt; #{endTime}
+          AND ic.end_time &gt; #{startTime}
+        <if test="excludeArrangeId != null and excludeArrangeId != ''">
+            AND ic.arrange_id != #{excludeArrangeId}
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,32 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /invigilation
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/invigilation_system?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:YZYyzy111}
+
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+file:
+  upload-dir: ${FILE_UPLOAD_DIR:./uploads}
+
+logging:
+  level:
+    com.invigilation.invigilation.mapper: debug
+
+jwt:
+  secret: ${JWT_SECRET:invigilation-system-secret-key-2026-for-jwt-auth-spring-boot}
+  expiration: ${JWT_EXPIRATION:86400000}
