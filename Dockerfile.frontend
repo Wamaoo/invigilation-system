@@ -5,7 +5,7 @@ RUN npm install -g pnpm
 
 WORKDIR /app/invigilation-system
 COPY invigilation-system/package.json invigilation-system/pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 COPY invigilation-system/ ./
 RUN pnpm run build
