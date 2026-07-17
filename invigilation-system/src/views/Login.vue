@@ -126,7 +126,6 @@ const handleLogin = async () => {
           <div class="copyright">
             版权所有©山东理工大学 地址：山东省淄博市张店区新村西路266号 (255000)
             <br />
-            鲁ICP备09041544号-6
           </div>
         </div>
       </div>
@@ -152,7 +151,9 @@ const handleLogin = async () => {
   border-bottom: 1px solid var(--login-header-border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
 }
 .header-container {
   width: 1200px;
