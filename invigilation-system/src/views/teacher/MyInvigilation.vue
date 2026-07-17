@@ -57,7 +57,7 @@ const applyForm = reactive<ConflictApplyForm>({
 const uploadRef = ref()
 const fileList = ref<any[]>([])
 const uploadAction = `/invigilation/api/upload`
-const uploadHeaders = { /* 无需额外认证头 */ }
+const uploadHeaders = {/* 无需额外认证头 */}
 
 const handleUploadSuccess = (res: any) => {
   if (res.code === 200 && res.data) {
@@ -145,7 +145,8 @@ onMounted(() => {
 const openConflictApply = async (row: MyInvigilation) => {
   const teacherId = getTeacherId(userStore.username)
   applyForm.teacherId = teacherId
-  applyForm.teacherName = row.myName || (await getTeacherById(teacherId))?.teacherName || '未知姓名'
+  applyForm.teacherName =
+    row.myName || (await getTeacherById(teacherId))?.teacherName || '未知姓名'
   applyForm.arrangeId = row.arrangeId
   applyForm.reason = ''
   applyForm.fileUrl = ''
@@ -176,7 +177,9 @@ const submitConflictApply = async () => {
 
 <template>
   <div>
-    <h2 style="margin-bottom: 20px; color: var(--text-primary)">我的监考安排</h2>
+    <h2 style="margin-bottom: 20px; color: var(--text-primary)">
+      我的监考安排
+    </h2>
 
     <!-- 未登录/非教师提示 -->
     <div
@@ -214,13 +217,27 @@ const submitConflictApply = async () => {
       class="empty-state"
       v-if="isTeacher && !loading && myInvigilationList.length === 0"
     >
-      <el-icon :size="72" color="#38bdf8" style="margin-bottom: 20px;">
+      <el-icon :size="72" color="#38bdf8" style="margin-bottom: 20px">
         <CircleCheck />
       </el-icon>
-      <h3 style="color: var(--text-primary); margin: 0 0 12px 0; font-size: 22px; font-weight: 600;">
+      <h3
+        style="
+          color: var(--text-primary);
+          margin: 0 0 12px 0;
+          font-size: 22px;
+          font-weight: 600;
+        "
+      >
         你已完成全部监考任务
       </h3>
-      <p style="color: var(--text-secondary); font-size: 15px; margin: 0; line-height: 1.6;">
+      <p
+        style="
+          color: var(--text-secondary);
+          font-size: 15px;
+          margin: 0;
+          line-height: 1.6;
+        "
+      >
         所有监考安排已结束，辛苦了！
       </p>
     </div>
@@ -266,11 +283,22 @@ const submitConflictApply = async () => {
             </template>
           </el-upload>
           <div v-if="applyForm.fileUrl" style="margin-top: 8px">
-            <el-link :href="applyForm.fileUrl" target="_blank" type="primary" :underline="false">
+            <el-link
+              :href="applyForm.fileUrl"
+              target="_blank"
+              type="primary"
+              :underline="false"
+            >
               <el-icon style="margin-right: 4px"><Download /></el-icon>
               查看已上传材料
             </el-link>
-            <el-button text size="small" type="danger" @click="removeFile" style="margin-left: 8px">
+            <el-button
+              text
+              size="small"
+              type="danger"
+              @click="removeFile"
+              style="margin-left: 8px"
+            >
               删除
             </el-button>
           </div>
@@ -297,6 +325,8 @@ const submitConflictApply = async () => {
   background: var(--empty-state-bg);
   border-radius: 16px;
   border: 2px dashed var(--empty-state-border);
-  transition: background 0.3s, border-color 0.3s;
+  transition:
+    background 0.3s,
+    border-color 0.3s;
 }
 </style>
