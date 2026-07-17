@@ -1,19 +1,19 @@
-# ========== Stage 1: Build Vue Frontend ==========
+# ========== Stage 1: Build Vue Frontend (pnpm) ==========
 FROM node:20-alpine AS frontend-builder
 
-WORKDIR /app
-COPY invigilation-system/package.json invigilation-system/pnpm-lock.yaml ./invigilation-system/
-RUN corepack enable && cd invigilation-system && pnpm install
+RUN npm install -g pnpm
 
-COPY invigilation-system/ ./invigilation-system/
-RUN cd invigilation-system && pnpm run build
+WORKDIR /app/invigilation-system
+COPY invigilation-system/package.json invigilation-system/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
-# ========== Stage 2: Express Server ==========
+COPY invigilation-system/ ./
+RUN pnpm run build
+
+# ========== Stage 2: Express Server (npm) ==========
 FROM node:20-alpine
 
 WORKDIR /app
-
-# package-lock.json 不存在也没关系，只复制 package.json
 COPY my_server_invigilation/package.json ./
 RUN npm install
 
@@ -21,5 +21,4 @@ COPY my_server_invigilation/ ./
 COPY --from=frontend-builder /app/invigilation-system/dist/ ./public/
 
 EXPOSE 8089
-
 CMD ["node", "server.js"]
