@@ -172,3 +172,10 @@ pnpm build
 ## 在线体验
 
 [https://invigilation-system-sdut.up.railway.app/](https://invigilation-system-sdut.up.railway.app/)
+教师端:
+账号：T001
+密码：123456
+管理员端：
+账号：admin
+密码：YZYyzy111
+
