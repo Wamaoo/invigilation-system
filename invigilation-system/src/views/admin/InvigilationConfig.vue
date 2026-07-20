@@ -115,7 +115,10 @@ const handleTimeChange = () => {
 }
 
 // ====== 获取列表 ======
-onMounted(() => getConfigList())
+onMounted(async () => {
+  if (!semesterStore.current) await semesterStore.fetchCurrent()
+  getConfigList()
+})
 
 const getConfigList = async () => {
   loading.value = true

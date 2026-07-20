@@ -71,6 +71,7 @@ async function handleSetCurrent(row: SemesterItem) {
   if (row.isCurrent === 1) return
   try {
     await setCurrentSemester(row.id)
+    await semesterStore.fetchCurrent()
     ElMessage.success('已切换当前学期为 ' + row.name)
     loadData()
   } catch {

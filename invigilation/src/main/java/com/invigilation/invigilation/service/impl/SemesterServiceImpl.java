@@ -6,7 +6,10 @@ import com.invigilation.invigilation.service.SemesterService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -26,7 +29,39 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public Semester getCurrent() {
-        return semesterMapper.selectCurrent();
+        Semester current = semesterMapper.selectCurrent();
+        if (current != null) return current;
+
+        // 没有设置当前学期时，根据北京日期自动匹配
+        List<Semester> all = semesterMapper.selectAll();
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Shanghai"));
+
+        // 1. 找日期范围包含今天且在有效期内的学期
+        for (Semester s : all) {
+            if (s.getStartDate() != null && s.getEndDate() != null
+                    && !today.isBefore(s.getStartDate())
+                    && !today.isAfter(s.getEndDate())) {
+                autoSetCurrent(s);
+                return s;
+            }
+        }
+
+        // 2. 没有匹配的，选最近结束的学期（已结束）
+        Semester nearest = all.stream()
+                .filter(s -> s.getEndDate() != null)
+                .max(Comparator.comparing(Semester::getEndDate))
+                .orElse(null);
+        if (nearest != null) {
+            autoSetCurrent(nearest);
+        }
+        return nearest;
+    }
+
+    private void autoSetCurrent(Semester semester) {
+        semesterMapper.clearCurrent();
+        semester.setIsCurrent(1);
+        semester.setUpdateTime(LocalDateTime.now());
+        semesterMapper.updateById(semester);
     }
 
     @Override

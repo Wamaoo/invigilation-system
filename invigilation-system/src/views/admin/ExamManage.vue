@@ -65,7 +65,6 @@ const getExamList = async () => {
   try {
     const res = await fetchExamList({
       ...searchForm.value,
-      semesterId: semesterStore.current?.name ?? '',
       page: currentPage.value,
       size: pageSize.value
     })

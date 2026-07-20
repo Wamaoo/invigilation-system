@@ -7,7 +7,7 @@ import { useSemesterStore } from '@/stores/semester'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { House, User, Document, Calendar, Lock, Moon, Sunny, Setting } from '@element-plus/icons-vue'
-import { updateAdminPassword, setCurrentSemester, type SemesterItem } from '@/api/admin'
+import { updateAdminPassword } from '@/api/admin'
 import { useWebSocket } from '@/composables/useWebSocket'
 
 const userStore = useUserStore()
@@ -23,28 +23,9 @@ onMounted(async () => {
   if (userStore.isLogin) {
     wsConnect()
     await semesterStore.fetchCurrent()
-    await semesterStore.fetchList()
   }
 })
 onUnmounted(() => wsDisconnect())
-
-// 学期切换
-const switchingSemester = ref(false)
-const handleSemesterSwitch = async (semester: SemesterItem) => {
-  if (semester.isCurrent === 1) return
-  switchingSemester.value = true
-  try {
-    await setCurrentSemester(semester.id)
-    await semesterStore.fetchCurrent()
-    await semesterStore.fetchList()
-    ElMessage.success('已切换到 ' + semester.name)
-    // 刷新当前页面
-    router.go(0)
-  } catch {
-    ElMessage.error('切换失败')
-  }
-  switchingSemester.value = false
-}
 
 // 退出登录
 const logout = () => {
@@ -142,22 +123,6 @@ const submitPassword = async () => {
       >
         <div style="display: flex; align-items: center; gap: 12px">
           <span>欢迎您，{{ username || '管理员' }}</span>
-          <el-select
-            v-model="semesterStore.current"
-            value-key="id"
-            placeholder="选择学期"
-            size="small"
-            style="width: 170px"
-            :loading="switchingSemester"
-            @change="handleSemesterSwitch"
-          >
-            <el-option
-              v-for="s in semesterStore.list"
-              :key="s.id"
-              :label="s.name + (s.isCurrent === 1 ? ' (当前)' : '')"
-              :value="s"
-            />
-          </el-select>
           <el-button text size="small" @click="pwdDialogVisible = true">
             <el-icon style="margin-right: 4px"><Lock /></el-icon>修改密码
           </el-button>
